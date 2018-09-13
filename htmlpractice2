@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang = 'en-US'>
+  <head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="utf-8"/>
+    <link rel = 'stylesheet' href = 'style.css'>
+    <title>About Me</title>
+  </head>
+  <body>
+    <h1>About Me</h1>
+  
+  <div>
+    <ol> 
+     <li>Nickname: <span id="nickname"></span></li>
+     <li>Hobbies:  <span id="favorites"></span></li>
+     <li>Hometown: <span id="hometown"></span></li>
+   </ol>
+  </div>
+
+  <ul><p id = 'forloop'><b>Remember these tips for Javascript For Loops</b></p>
+  	<li>First, get element and assign it to a variable.</li>
+  	<li>Next, create the for loop. Remember to include var when stating where to start from. An example is <code>var i = 0</code>.</li>
+  	<li>Remember to add the curly brackets at the end, and the conditions you want to change. Inspect element to see an example.</li>
+  	<li>If you want to change the text in an element, this is an example template to follow: <code>variable[index].innerHTML = 'hello world';</code></li>
+  </ul>
+
+  <!-- $('li:eq(1)') === $('li').eq(1)
+  Click function to toggle list element color-->  
+  
+  <script>
+    $(function(){
+    $('li').click(function(){
+        $('li').css('color','black');
+        $(this).css('color', 'orange');
+    });
+});
+  </script>
+
+  <h2 id = 'extext'>Example Text</h2>
+  <p id = 'mainheading'>This is just example text to manipulate and style.</p>
+    <h3>Change the text in this box:</h3>
+      <textarea id="script-code" class="form-control" style = 'width:200px; height:50px; text-align: left; background-color:lightcoral'>
+			Change me!
+      </textarea>
+  
+  <p id = 'zeta'>Zeta Chi Epsilon</p>
+  <button id = 'button'>Change color of this text</button>
+    <script>
+      $(function(){
+      $('#button').click(function(){ // also read as 'id=button.onClick = function()'
+          $('#zeta').css({'color':'red', 'background-color':'black', 'fontFamily':'Courier New', 'fontSize':'20pt', 'width':'260px'}); 
+          $(this).text('For Life!');  // 'this' targets #button
+      });
+    });
+    </script>
+  
+  <button id = 'button1' onclick = 'dothis()'>Get Time</button><br>
+    <script>
+    function dothis() {
+      var greet;
+      var checkit = new Date().getHours();
+      if (checkit <= 12) {
+        greet = 'Good morning!';
+      } else if (checkit > 12 && checkit < 17) {
+        greet = 'Still grinding...';
+      } else if (checkit > 17) {
+        greet = 'Off work boys!';
+      } else {
+        greet = 'Woohoo party time';
+      }
+  document.getElementById('mainheading').innerHTML = greet;
+    }
+     </script>
+  
+  <button id = 'age' onclick = 'age()'>How old are you?</button><br>
+    <script>
+      function age() {
+       var age = prompt('What\'s your age?', '');
+       let message = age <= 18 ? 'You have zero responsibilities':
+        (age >= 18 && age < 30) ? 'Welcome to adult life...it sucks':
+        (age >= 30 && age < 40) ? 'You\'re still young kind of':
+        (age >= 40 && age < 45) ? 'Your mom probably thinks you\'re still young':
+        'You\'re old as shit';
+       alert(message);
+       }
+    </script>
+  
+  <button id = 'simple'>External Javascript</button>
+  <script src = 'simple.js'></script>
+  <br>
+  <br>
+
+  <label>First Name</label><input type="text" name="firstname" id="firstname">
+  <label>Last Name</label><input type="text" name="lastname" id="lastname">
+  <button onclick = 'whatsyourname()'>Submit</button><br>
+  <span id = 'yourname'></span>
+  <script>
+      function whatsyourname() {
+    var x = document.getElementById('firstname').value; // add value to show text
+    var y = document.getElementById('lastname').value;
+    var d = document.createTextNode('Your name is ' + x + ' ' + y + '.');
+    document.getElementById('yourname').appendChild(d);
+  }
+</script>
+
+  <p id = 'tutorial'>
+  <span>
+    <b><small id="start">Twinkle</small></b>
+    <i>twinkle little<img src="https://pbs.twimg.com/profile_images/854464406234714112/je-o12Aj_400x400.jpg"></i>
+  <span>
+  </p>
+<script>
+    document.getElementsByTagName('body')[0].innerHTML += 'Google'.link('https://www.google.com');
+</script>
+<div>
+    <p id = 'udacity'>
+    <a href = 'https://classroom.udacity.com/courses/ud117/lessons/364ca3da-1eb9-4213-beb4-7791ac4e1ea4/concepts/535ff7d3-ebe8-41b6-9c32-42ad65f722af' target = '_blank'>Udacity For Loops</a>
+    </p>
+</div>
+
+<script>	
+  const frag = document.createDocumentFragment(); //holds code without causing reflow 
+	for (let i = 0; i < 3; i++) {
+		const newp = document.createElement('p');
+		newp.innerText = 'This is an example of the document fragment method: #' + i;
+		frag.appendChild(newp);
+	}
+    document.body.appendChild(frag);
+ 	document.getElementById('nickname').innerHTML = 'jshek'; // textContent and innerText also work
+ 	document.getElementById('favorites').innerText = 'basketball, coding';
+ 	document.getElementById('hometown').textContent = 'san francisco';
+</script>
+
+  </body>
+</html>
