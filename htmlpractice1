@@ -52,7 +52,7 @@
             <button onclick ='msg()'>Click me to say hi</button>
             <script>
                 function msg() {
-                alert('Fuck you');
+                alert('Hello!');
                 }
             </script>
         </div><br>
