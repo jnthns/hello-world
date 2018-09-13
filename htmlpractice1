@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id = 'title'>Javascript Test Doc</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+        <script>
+            $(function(){
+                $('p').dblclick(function(){
+                    $(this).hide();
+                });
+            });
+        </script>
+        <script>
+            $(function(){
+                $('#mybutton').click(function(){
+                    $('#w3').attr('href', 'https://www.w3schools.com/jquery/');
+                });
+            });
+        </script>
+        <!--Google CDN JQuery link-->
+        <!--JQuery Syntax = $(selector).action()
+            $(this).hide() - hides the current element.
+            $("p").hide() - hides all <p> elements.
+            $(".test").hide() - hides all elements with class="test".
+                $("p.test").hide() - hides all <p> elements with class="test".
+            $("#test").hide() - hides the element with id="test".
+            $(function(){}); = shortcut for document.ready(function)-->
+    </head>
+        <body>
+        <div style = "font-family:'Helvetica';color:orange">Click number below to multiply by PI <br>
+        <p id = "text" onclick = "fun()">
+        1
+        </p>
+        <script>
+            function fun() {
+                var obj = document.getElementById("text")
+                var n = obj.innerHTML; 
+                obj.innerHTML = n * 3.14;
+            }
+        </script>
+        </div>
+        
+        <div>
+            <span class = 'para' id = 'demo'>
+                <p style = 'color: slateblue'>Double click me to hide</p>
+                <p style = 'font-family: Verdana'><i>This</i></p>
+                <p><u>Text</u></p>
+            </span>
+        </div>
+        <p id = 'nothing'>This is just a placeholder message. Lorem ipsum blah blah blah</p>
+        <div id = 'click'>
+            <button onclick ='msg()'>Click me to say hi</button>
+            <script>
+                function msg() {
+                alert('Fuck you');
+                }
+            </script>
+        </div><br>
+        
+        <div id = 'date'>
+            <button onclick ='date()'>Check date and time here</button>
+            <script>
+                var date = document.getElementById('date');
+                date.onclick = function () {
+                    alert(Date());
+                }
+            </script>
+        </div>
+       
+        <br>
+        <div id = 'HTML'>
+            <a href='https://www.w3schools.com/html/html_links.asp' target = '_blank'>W3Schools HTML Tutorial</a><br>
+            <a href='https://www.demandbase.com' target = '_blank'>
+                <img src = 'https://i0.wp.com/martechseries.com/wp-content/uploads/2017/04/Demandbase-Adobe-Approved-1.png?fit=940%2C529&ssl=1' alt = 'Demandbase Logo' style = 'width:300px;height:150px;border:0;'>
+            </a>
+        </div>
+            <p><a href = 'https://demandbase.com' target = '_blank' style = 'color: green'>Check me out!</a></p>
+            <ul>
+                <li><strong>Javascript is cool</strong></li>
+                <li><mark>Jquery</mark> is a Javascript library designed to make dom manipulation easier</li>
+                <li>The demandbase logo's <code>img src</code> is viewable on Google Images.</li>
+            </ul>
+            <p id="nicetext" style="color: purple">
+            Javascript works hand in hand together with HTML and CSS to create informative and useful webpages.
+            </p>
+        <div id = 'button'>
+            <button type = 'button' onclick = "changeColor()">Change color</button>
+                <script>
+                    function changeColor() {
+                        var x = document.getElementById('nicetext');
+                        if (x.style.color === 'purple') {
+                            x.style.color = 'orange';
+                        } else {
+                            x.style.color = 'purple';
+                        }
+                    }
+                </script>
+         </div>      
+         <div id = 'display'>
+            <button type = 'button' onclick = 'display()'>Show text</button>
+                <script>
+                    function display() {
+                        var d = document.getElementById('nicetext');
+                        if (d.style.display === 'none')  {
+                            d.style.display = 'block';
+                        } else {
+                            d.style.display = 'none';
+                        }
+                    }
+                </script>
+        </div>
+        <div id = 'jquerybutton'>
+            <a href='https://www.w3schools.com' id = 'w3' target = '_blank'><button id = 'mybutton' ><i>JQuery</i></button></a>
+            <style>
+            #mybutton {
+                width: 40%;
+                padding: 20px 0;
+                text-align: center;
+                background-color: darkseagreen;
+                margin-top: 20px;
+                font-size: 200%;
+            }     
+            </style>
+        </div>
+    </body>
+</html>
