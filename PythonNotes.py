@@ -1,27 +1,20 @@
-# def vwl(s):
+### 									PYTHON NOTES
+#--------------------------------------------------------------------------------------------------
+## VOWEL CHECKER
+# Count the number of vowels that appear in a string, using an if statement.
+
+x = input('Please enter a word.')
+
+# def vowelcheck(x):
 # 	count = 0
-# 	if s == '':
-# 		print('Re-enter word.')
-# 	elif s in 'aeiou':
+# 	if x in 'aeiou':
 # 		count += 1
 # 		print('There are ' + str(count) + ' vowels in this word.')
 # 	else:
-# 		print("There are " + str(count) + " vowels in this word.")
+# 		print('There are ' + str(count) + ' vowels in this word.')
 
+# Same problem but using a list comprehension instead.
 
-# def vowel(x):
-# 	count = 0
-# 	for letter in x:
-# 		if letter in 'aeiou':
-# 			count += 1
-# 			print('There are ' + str(count) + ' vowels in this word.')
-# 		else:
-# 			print('There are ' + str(count) + ' vowels in this word.')
-# 			break
-
-
-x = 'jon'
 print('There are ' + str(sum([1 for i in x if i in 'aeiou'])) + ' vowels in this word.')
 
 
-sum([1 for i in x if i in 'aeiou'])
