@@ -1,6 +1,7 @@
 ### 									PYTHON NOTES
 #--------------------------------------------------------------------------------------------------
-## VOWEL CHECKER
+### VOWEL CHECKER
+
 # Count the number of vowels that appear in a string, using an if statement.
 
 # x = input('Please enter a word.')
@@ -20,6 +21,20 @@
 # print('There are ' + str(sum([1 for i in x if i in 'aeiouAEIOU'])) + ' vowels in this word.')
 
 #--------------------------------------------------------------------------------------------------
+# ### ATTRIBUTES AND METHODS
+
+# # Methods can be thought of as functions ending with parentheses that return a result. For example:
+# print(df.head())
+# # prints the first five rows of a dataframe
+# print(df.describe())
+# # prints a description of the data
+
+# # Whereas attributes can are thought of as returning information about data.
+# print(df.shape)
+# # prints number of rows, number of columns
+#--------------------------------------------------------------------------------------------------
+### RANDOM FUNCTION NOTES
+
 # def sleep_in(weekday):
 #   weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 #   if weekday in weekdays:
@@ -72,21 +87,21 @@
 #--------------------------------------------------------------------------------------------------
 ### READ DATA FROM CSV INTO PANDAS, THEN INTO SQL
 
-import pandas as pd 
-import sqlalchemy
+# import pandas as pd 
+# import sqlalchemy
 
-# Read in CSV with specific columns 
-colnames = [0,1,2,9,10,21,28]
-df = pd.read_csv('Truveris ES Ads List Match Q3 2018_2018-07-16_126842_output.csv', usecols=colnames)
+# # Read in CSV with specific columns 
+# colnames = [0,1,2,9,10,21,28]
+# df = pd.read_csv('Truveris ES Ads List Match Q3 2018_2018-07-16_126842_output.csv', usecols=colnames)
 
-# Rename columns to make SQL querying easier
-# Can also change columns in workbench by using ALTER TABLE 
-# ALTER TABLE Truveris CHANGE COLUMN `Source Name` `Sourcename` VARCHAR(255) NOT NULL
-df.rename(columns={
-	'Source Name': 'Sourcename',
-	'Best SID': 'Bestsid',
-	'Source Domain': 'Sourcedomain'
-	}, inplace=True)
+# # Rename columns to make SQL querying easier
+# # Can also change columns in workbench by using ALTER TABLE 
+# # ALTER TABLE Truveris CHANGE COLUMN `Source Name` `Sourcename` VARCHAR(255) NOT NULL
+# df.rename(columns={
+# 	'Source Name': 'Sourcename',
+# 	'Best SID': 'Bestsid',
+# 	'Source Domain': 'Sourcedomain'
+# 	}, inplace=True)
 
 # Write dataframe to SQL database
 # df.to_sql(
@@ -96,16 +111,50 @@ df.rename(columns={
 # 	)
 # Now Truveris is loaded as a table in test.Tutorial
 #--------------------------------------------------------------------------------------------------
-# ### Attributes and Methods 
-# # Methods can be thought of as functions ending with parentheses that return a result. For example:
-# print(df.head())
-# # prints the first five rows of a dataframe
-# print(df.describe())
-# # prints a description of the data
+### TUTORIALS POINT PYTHON3 PYMYSQL TUTORIAL
+# Create test database, test table EMPLOYEE 
 
-# # Whereas attributes can are thought of as returning information about data.
-# print(df.shape)
-# # prints number of rows, number of columns
+import pymysql
+
+# Open database connection
+db = pymysql.connect("127.0.0.1","root","h3llsb3lls$","Tutorial")
+
+# prepare a cursor object using cursor() method
+cursor = db.cursor()
+
+# execute SQL query using execute() method.
+cursor.execute("SELECT VERSION()")
+
+# Fetch a single row using fetchone() method.
+data = cursor.fetchone()
+print ("MySQL Workbench version: %s " % data)
+
+# disconnect from server
+db.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
