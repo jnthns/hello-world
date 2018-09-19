@@ -110,33 +110,101 @@
 # 	index=False,
 # 	)
 # Now Truveris is loaded as a table in test.Tutorial
+
 #--------------------------------------------------------------------------------------------------
 ### TUTORIALS POINT PYTHON3 PYMYSQL TUTORIAL
 # Create test database, test table EMPLOYEE 
 
-import pymysql
+# import pymysql
 
-# Open database connection
-db = pymysql.connect("127.0.0.1","root","h3llsb3lls$","Tutorial")
+# # Open database connection - Schema is synonymous with Database in MySQL 
+# db = pymysql.connect("127.0.0.1","root","h3llsb3lls$","Tutorial")
 
-# prepare a cursor object using cursor() method
-cursor = db.cursor()
+# # prepare a cursor object using cursor() method
+# cursor = db.cursor()
+# #----------------(Find SQL Version)-----------------
+# # # execute SQL query using execute() method.
+# # cursor.execute("SELECT VERSION()")
 
-# execute SQL query using execute() method.
-cursor.execute("SELECT VERSION()")
+# # # Fetch a single row using fetchone() method.
+# # data = cursor.fetchone()
+# # print ("MySQL Workbench version: %s " % data)
+# #---------------------------------------------------
+# # create table employee
+# # sql = ''' CREATE TABLE EMPLOYEE (
+# # 	firstname VARCHAR(20) NOT NULL,
+# # 	lastname VARCHAR(20),
+# # 	age int,
+# # 	sex char(1),
+# # 	income float ) '''
 
-# Fetch a single row using fetchone() method.
-data = cursor.fetchone()
-print ("MySQL Workbench version: %s " % data)
+# # # cursor object executes script
+# # try:
+# # 	cursor.execute(sql)
+# # 	# commit changes in the db
+# # 	db.commit()
+# # except: 
+# # 	# rollback in case error happens
+# # 	db.rollback()
 
-# disconnect from server
-db.close()
+# # Write query in triple ''' 
+# # firstrow = ''' INSERT INTO EMPLOYEE VALUES (
+# # 	'Jon', 'Shek', '23', 'M', '300000') '''
 
+# # cursor.execute(query)
+# # cursor.execute(firstrow)
 
+# # commit changes to database
+# # hit refresh in workbench to see results
+# db.commit()
 
+# # Use %d instead of numerical value (1000) for easier editing 
+# income = '''SELECT * FROM EMPLOYEE \
+# 			WHERE income > "%d"''' % (1000)
 
+# cursor.execute(income)
 
+# # fetches all rows called in query
+# results = cursor.fetchall()
+# for row in results:
+# 	firstname = row[0]
+# 	lastname = row[1]
+# 	age = row[2]
+# 	sex = row[3]
+# 	income = row[4]
+# 	print(('His name is %s %s, he\'s %s years old and he makes $%s a year.') % (firstname, lastname, age, income))
 
+# # can also use double quotes, do not break formatting like select statement above 
+# demoted = "UPDATE EMPLOYEE SET income = 0 WHERE age = '%d'" % (66)
+
+# cursor.execute(demoted)
+# db.commit()
+# db.rollback()
+# # disconnect from server
+# db.close()
+#--------------------------------------------------------------------------------------------------
+### Requests Tutorial
+# https://stackabuse.com/the-python-requests-module/
+
+# Reading Response of a HTTPS using GET
+
+import requests
+
+# r = requests.get('http://httpbin.org/get')  
+# # for HTML text 
+# # print(r.text)
+
+# # inspect element, network tab, click get under name, headers tab on the right
+# # response headers section - dictionary 
+# print(r.headers['content-type']) # to see what the response format is, which is JSON
+
+# # Requests has built-in json parser .json()
+# response = r.json()
+# print(response)
+
+# Requests POST - submitting data rather than getting it 
+payload = {'user_name': 'admin', 'password': 'password'}
+r = requests.post('http://httpbin.org/post', data=payload)
 
 
 
