@@ -183,12 +183,12 @@
 # # disconnect from server
 # db.close()
 #--------------------------------------------------------------------------------------------------
-### Requests Tutorial
-# https://stackabuse.com/the-python-requests-module/
+# ### Requests Tutorial
+# # https://stackabuse.com/the-python-requests-module/
 
-# Reading Response of a HTTPS using GET
+# # Reading Response of a HTTPS using GET
 
-import requests
+# import requests
 
 # r = requests.get('http://httpbin.org/get')  
 # # for HTML text 
@@ -202,11 +202,102 @@ import requests
 # response = r.json()
 # print(response)
 
-# Requests POST - submitting data rather than getting it 
-payload = {'user_name': 'admin', 'password': 'password'}
-r = requests.post('http://httpbin.org/post', data=payload)
+# # Requests POST - submitting data rather than getting it 
+# payload = {'user_name': 'admin', 'password': 'password'}
+# r = requests.post('http://httpbin.org/post', data=payload)
+
+#--------------------------------------------------------------------------------------------------
+### Matplotlib & Seaborn 
+# https://elitedatascience.com/python-seaborn-tutorial
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns 
+
+df = pd.read_csv('Pokemon.csv', encoding='windows-1252', index_col=0)
+
+# Before plotting graph, choose a theme 
+# darkgrid also makes a grid except with a darker background
+sns.set_style('whitegrid')
+
+# Compare attack and defense columns 
+# fit_reg is the regression line, removed to show just scatter plot
+## can also remove scatter plot and keep just the regression line by setting scatter=False
+# hue is the color of the points. Set hue to csv column 'stage' to show evolution stage of each pokemon
+# sns.lmplot(x='Attack', y='Defense', data=df, fit_reg=False, hue='Stage')
+
+# Set color palette 
+# list format
+pkmncolors = ['#78C850',  # Grass
+                    '#F08030',  # Fire
+                    '#6890F0',  # Water
+                    '#A8B820',  # Bug
+                    '#A8A878',  # Normal
+                    '#A040A0',  # Poison
+                    '#F8D030',  # Electric
+                    '#E0C068',  # Ground
+                    '#EE99AC',  # Fairy
+                    '#C03028',  # Fighting
+                    '#F85888',  # Psychic
+                    '#B8A038',  # Rock
+                    '#705898',  # Ghost
+                    '#98D8D8',  # Ice
+                    '#7038F8',  # Dragon
+                   ]
+
+# violinplot useful for showing distribution instead of summary statistics
+# sns.violinplot(x='Type 1', y='Attack', data=df, palette=pkmncolors)
+
+# swarmplot useful for showing each point while 'stacking' those with similar values 
+# sns.swarmplot(x='Type 1', y='Attack', data=df, palette=pkmncolors)
+
+# can also overlay plots - swarm and violin in this example
+# Set figure size with matplotlib
+plt.figure(figsize=(10,6))
+ 
+# # Create plot
+# sns.violinplot(x='Type 1',
+#                y='Attack', 
+#                data=df, 
+#                inner=None, # Remove the bars inside the violins
+#                palette=pkmncolors)
+ 
+# sns.swarmplot(x='Type 1', 
+#               y='Attack', 
+#               data=df, 
+#               color='k', # Make points black
+#               alpha=0.7) # and slightly transparent
+ 
+# Set title with matplotlib
+plt.title('Attack by Type')
+
+# Some columns can be removed from the file that wouldn't be useful in the graphs for cleaner representation
+statsdf = df.drop(['Total', 'Stage', 'Legendary'], axis=1)
+
+# First, the DataFrame to melt.
+# Second, ID variables to keep (Pandas will melt all of the other ones).
+# Finally, a name for the new, melted variable.
+melted_df = pd.melt(statsdf, id_vars=['Name', 'Type 1', 'Type 2'], # variables to keep
+							 var_name='Stat') # name of melted variable
+
+## Display new graph with melted_df
+# sns.swarmplot(x='Stat', y='value', data=melted_df, hue='Type 1', palette=pkmncolors)
+
+## Set a different ylimit for this swarm plot
+# plt.ylim(0,260)
+## Shift legend to the right
+# plt.legend(bbox_to_anchor=(1,1), loc=2)
+
+# Bar Graph aka Count Plot 
+sns.countplot(x='Type 1', data=df, palette=pkmncolors)
+
+# Tweak x and y axis limit using Matplotlib
+plt.ylim(0, None)
+plt.xlim(-1, None)
 
 
+# Display graph in Python
+plt.show()
 
 
 
