@@ -209,111 +209,146 @@
 #--------------------------------------------------------------------------------------------------
 ### Matplotlib & Seaborn 
 # https://elitedatascience.com/python-seaborn-tutorial
+## Seaborn's built-in datasets - https://github.com/mwaskom/seaborn-data
 
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns 
+# import matplotlib.pyplot as plt
+# import pandas as pd
+# import seaborn as sns 
 
-df = pd.read_csv('Pokemon.csv', encoding='windows-1252', index_col=0)
+# df = pd.read_csv('Pokemon.csv', encoding='windows-1252', index_col=0)
 
-# Before plotting graph, choose a theme 
-# darkgrid also makes a grid except with a darker background
-sns.set_style('whitegrid')
+# # Before plotting graph, choose a theme 
+# # darkgrid also makes a grid except with a darker background
+# sns.set_style('whitegrid')
 
-# Compare attack and defense columns 
-# fit_reg is the regression line, removed to show just scatter plot
-## can also remove scatter plot and keep just the regression line by setting scatter=False
-# hue is the color of the points. Set hue to csv column 'stage' to show evolution stage of each pokemon
+# # Compare attack and defense columns 
+# # fit_reg is the regression line, removed to show just scatter plot
+# ## can also remove scatter plot and keep just the regression line by setting scatter=False
+# # hue is the color of the points. Set hue to csv column 'stage' to show evolution stage of each pokemon
 # sns.lmplot(x='Attack', y='Defense', data=df, fit_reg=False, hue='Stage')
 
-# Set color palette 
-# list format
-pkmncolors = ['#78C850',  # Grass
-                    '#F08030',  # Fire
-                    '#6890F0',  # Water
-                    '#A8B820',  # Bug
-                    '#A8A878',  # Normal
-                    '#A040A0',  # Poison
-                    '#F8D030',  # Electric
-                    '#E0C068',  # Ground
-                    '#EE99AC',  # Fairy
-                    '#C03028',  # Fighting
-                    '#F85888',  # Psychic
-                    '#B8A038',  # Rock
-                    '#705898',  # Ghost
-                    '#98D8D8',  # Ice
-                    '#7038F8',  # Dragon
-                   ]
+# # Set color palette 
+# # list format
+# pkmncolors = ['#78C850',  # Grass
+#                     '#F08030',  # Fire
+#                     '#6890F0',  # Water
+#                     '#A8B820',  # Bug
+#                     '#A8A878',  # Normal
+#                     '#A040A0',  # Poison
+#                     '#F8D030',  # Electric
+#                     '#E0C068',  # Ground
+#                     '#EE99AC',  # Fairy
+#                     '#C03028',  # Fighting
+#                     '#F85888',  # Psychic
+#                     '#B8A038',  # Rock
+#                     '#705898',  # Ghost
+#                     '#98D8D8',  # Ice
+#                     '#7038F8',  # Dragon
+#                    ]
 
-# violinplot useful for showing distribution instead of summary statistics
+# # violinplot useful for showing distribution instead of summary statistics
 # sns.violinplot(x='Type 1', y='Attack', data=df, palette=pkmncolors)
 
-# swarmplot useful for showing each point while 'stacking' those with similar values 
+# # swarmplot useful for showing each point while 'stacking' those with similar values 
 # sns.swarmplot(x='Type 1', y='Attack', data=df, palette=pkmncolors)
 
-# can also overlay plots - swarm and violin in this example
-# Set figure size with matplotlib
-plt.figure(figsize=(10,6))
+# # can also overlay plots - swarm and violin in this example
+# # Set figure size with matplotlib
+# plt.figure(figsize=(10,6))
  
-# # Create plot
+# # # Create plot
 # sns.violinplot(x='Type 1',
 #                y='Attack', 
 #                data=df, 
 #                inner=None, # Remove the bars inside the violins
 #                palette=pkmncolors)
  
-# sns.swarmplot(x='Type 1', 
+# # sns.swarmplot(x='Type 1', 
 #               y='Attack', 
 #               data=df, 
 #               color='k', # Make points black
 #               alpha=0.7) # and slightly transparent
  
-# Set title with matplotlib
-plt.title('Attack by Type')
+# # Set title with matplotlib
+# plt.title('Attack by Type')
 
-# Some columns can be removed from the file that wouldn't be useful in the graphs for cleaner representation
-statsdf = df.drop(['Total', 'Stage', 'Legendary'], axis=1)
+# # Some columns can be removed from the file that wouldn't be useful in the graphs for cleaner representation
+# statsdf = df.drop(['Total', 'Stage', 'Legendary'], axis=1)
 
-# First, the DataFrame to melt.
-# Second, ID variables to keep (Pandas will melt all of the other ones).
-# Finally, a name for the new, melted variable.
-melted_df = pd.melt(statsdf, id_vars=['Name', 'Type 1', 'Type 2'], # variables to keep
-							 var_name='Stat') # name of melted variable
+# # First, the DataFrame to melt.
+# # Second, ID variables to keep (Pandas will melt all of the other ones).
+# # Finally, a name for the new, melted variable.
+# melted_df = pd.melt(statsdf, id_vars=['Name', 'Type 1', 'Type 2'], # variables to keep
+# 							 var_name='Stat') # name of melted variable
 
-## Display new graph with melted_df
+# ## Display new graph with melted_df
 # sns.swarmplot(x='Stat', y='value', data=melted_df, hue='Type 1', palette=pkmncolors)
 
-## Set a different ylimit for this swarm plot
+# ## Set a different ylimit for this swarm plot
 # plt.ylim(0,260)
-## Shift legend to the right
+# ## Shift legend to the right
 # plt.legend(bbox_to_anchor=(1,1), loc=2)
 
-# Bar Graph aka Count Plot 
-sns.countplot(x='Type 1', data=df, palette=pkmncolors)
+# # Bar Graph aka Count Plot 
+# sns.countplot(x='Type 1', data=df, palette=pkmncolors)
 
-# Tweak x and y axis limit using Matplotlib
-plt.ylim(0, None)
-plt.xlim(-1, None)
-
-
-# Display graph in Python
-plt.show()
+# # Tweak x and y axis limit using Matplotlib
+# plt.ylim(0, None)
+# plt.xlim(-1, None)
 
 
+# # Display graph in Python
+# plt.show()
 
+#--------------------------------------------------------------------------------------------------
+### SQL Queries in Pandas Python format
+## https://codeburst.io/how-to-rewrite-your-sql-queries-in-pandas-and-more-149d341fc53e
+## take airports.csv from http://ourairports.com/data/
 
+import pandas as pd 
+import sqlalchemy
 
+airports = pd.read_csv('airports.csv')
 
+### BASICS 
+sql = ''' SELECT id FROM airports WHERE ident = "KLAX"''' 
+pdselectid = airports[airports.ident=='KLAX'].id 
 
+sql = ''' SELECT DISTINCT type FROM airports'''
+pdselectdistinct = airports.type.unique()
 
+sql = ''' SELECT * FROM airports WHERE type IN ('heliport', 'balloonport')'''
+pdin = airports[airports.type.isin(['heliport','balloonport'])]
 
+sql = ''' SELECT * FROM airports WHERE type NOT IN ('heliport', 'balloonport')'''
+pdnotin = airports[~airports.type.isin(['heliport','balloonport'])]
 
+# In Pandas, .count() will return the number of non-null/NaN values. To get the same result as the SQL COUNT, use .size().
+sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, type '''
+pdsize = airports.groupby(['iso_country','type']).size()
 
+### GETS HARDER
+sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, COUNT(*) DESC '''
+pdorderbycountdesc = airports.groupby(['iso_country', 'type']).size().to_frame('size').reset_index().sort_values(['iso_country', 'size'], ascending=[True, False])
+# What is this trickery with .to_frame() and .reset_index()? Because we want to sort by our calculated field (size), this field needs to become part of the DataFrame. After grouping in Pandas, we get back a different type, called a GroupByObject. So we need to convert it back to a DataFrame. With .reset_index(), we restart row numbering for our data frame.
 
+sql = ''' SELECT type, COUNT(*) FROM airports WHERE iso_country = 'US' GROUP BY type HAVING COUNT(*) > 1000 ORDER BY COUNT(*) DESC '''
+pdhaving = airports[airports.iso_country == 'US'].groupby('type').filter(lambda g: len(g) > 1000).groupby('type').size().sort_values(ascending=False)
 
+# Create new dataframe that contains number of airports per country
+pdbycountry = airports.groupby(['iso_country']).size()
 
+# Order things by airport count and select the top 10 countries with the largest count
+sql = ''' SELECT iso_country FROM by_country ORDER BY size desc LIMIT 10 '''
+pdn = pdbycountry.nlargest(10)
+# nlargest(number of rows to pull, which column to pull from)
+# print(airports.nlargest(5, 'id'))
 
-
+Random SQL Question
+# Find cities in table Station that start with vowels 
+sql = ''' SELECT City FROM Station WHERE City RLIKE '^[aeiou]' ''' 
+# Ending with vowels?
+sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
 
 
 
