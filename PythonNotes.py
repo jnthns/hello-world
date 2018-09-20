@@ -1,5 +1,5 @@
 ### 									PYTHON NOTES
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### VOWEL CHECKER
 
 # Count the number of vowels that appear in a string, using an if statement.
@@ -20,7 +20,7 @@
 
 # print('There are ' + str(sum([1 for i in x if i in 'aeiouAEIOU'])) + ' vowels in this word.')
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 # ### ATTRIBUTES AND METHODS
 
 # # Methods can be thought of as functions ending with parentheses that return a result. For example:
@@ -32,7 +32,7 @@
 # # Whereas attributes can are thought of as returning information about data.
 # print(df.shape)
 # # prints number of rows, number of columns
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### RANDOM FUNCTION NOTES
 
 # def sleep_in(weekday):
@@ -56,7 +56,7 @@
 #   elif a != b:
 #     return (a + b)
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ## USING SQL THROUGH PANDAS/PYTHON
 
 # https://www.youtube.com/watch?v=M-4EpNdlSuY
@@ -84,7 +84,7 @@
 
 # df = df.to_csv('readsql.csv')
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### READ DATA FROM CSV INTO PANDAS, THEN INTO SQL
 
 # import pandas as pd 
@@ -111,7 +111,7 @@
 # 	)
 # Now Truveris is loaded as a table in test.Tutorial
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### TUTORIALS POINT PYTHON3 PYMYSQL TUTORIAL
 # Create test database, test table EMPLOYEE 
 
@@ -182,7 +182,7 @@
 # db.rollback()
 # # disconnect from server
 # db.close()
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 # ### Requests Tutorial
 # # https://stackabuse.com/the-python-requests-module/
 
@@ -206,7 +206,7 @@
 # payload = {'user_name': 'admin', 'password': 'password'}
 # r = requests.post('http://httpbin.org/post', data=payload)
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### Matplotlib & Seaborn 
 # https://elitedatascience.com/python-seaborn-tutorial
 ## Seaborn's built-in datasets - https://github.com/mwaskom/seaborn-data
@@ -300,7 +300,7 @@
 # # Display graph in Python
 # plt.show()
 
-#--------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------
 ### SQL Queries in Pandas Python format
 ## https://codeburst.io/how-to-rewrite-your-sql-queries-in-pandas-and-more-149d341fc53e
 ## take airports.csv from http://ourairports.com/data/
@@ -344,11 +344,15 @@ pdn = pdbycountry.nlargest(10)
 # nlargest(number of rows to pull, which column to pull from)
 # print(airports.nlargest(5, 'id'))
 
-Random SQL Question
-# Find cities in table Station that start with vowels 
-sql = ''' SELECT City FROM Station WHERE City RLIKE '^[aeiou]' ''' 
-# Ending with vowels?
-sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+# Random SQL Question
+# # Find cities in table Station that start with vowels 
+# sql = ''' SELECT City FROM Station WHERE City RLIKE '^[aeiou]' ''' 
+# # Ending with vowels?
+# sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
 
 
 
