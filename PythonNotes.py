@@ -1,6 +1,6 @@
-### 									PYTHON NOTES
-#-------------------------------------------------------------------------------------------------------------------------
-### VOWEL CHECKER
+# ## 									PYTHON NOTES
+# -------------------------------------------------------------------------------------------------------------------------
+# ## VOWEL CHECKER
 
 # Count the number of vowels that appear in a string, using an if statement.
 
@@ -20,7 +20,7 @@
 
 # print('There are ' + str(sum([1 for i in x if i in 'aeiouAEIOU'])) + ' vowels in this word.')
 
-#-------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------------
 # ### ATTRIBUTES AND METHODS
 
 # # Methods can be thought of as functions ending with parentheses that return a result. For example:
@@ -32,8 +32,8 @@
 # # Whereas attributes can are thought of as returning information about data.
 # print(df.shape)
 # # prints number of rows, number of columns
-#-------------------------------------------------------------------------------------------------------------------------
-### RANDOM FUNCTION NOTES
+# -------------------------------------------------------------------------------------------------------------------------
+# ## RANDOM FUNCTION NOTES
 
 # def sleep_in(weekday):
 #   weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
@@ -56,8 +56,8 @@
 #   elif a != b:
 #     return (a + b)
 
-#-------------------------------------------------------------------------------------------------------------------------
-## USING SQL THROUGH PANDAS/PYTHON
+# -------------------------------------------------------------------------------------------------------------------------
+# # USING SQL THROUGH PANDAS/PYTHON
 
 # https://www.youtube.com/watch?v=M-4EpNdlSuY
 # import pandas as pd 
@@ -84,8 +84,8 @@
 
 # df = df.to_csv('readsql.csv')
 
-#-------------------------------------------------------------------------------------------------------------------------
-### READ DATA FROM CSV INTO PANDAS, THEN INTO SQL
+# -------------------------------------------------------------------------------------------------------------------------
+# ## READ DATA FROM CSV INTO PANDAS, THEN INTO SQL
 
 # import pandas as pd 
 # import sqlalchemy
@@ -111,8 +111,8 @@
 # 	)
 # Now Truveris is loaded as a table in test.Tutorial
 
-#-------------------------------------------------------------------------------------------------------------------------
-### TUTORIALS POINT PYTHON3 PYMYSQL TUTORIAL
+# -------------------------------------------------------------------------------------------------------------------------
+# ## TUTORIALS POINT PYTHON3 PYMYSQL TUTORIAL
 # Create test database, test table EMPLOYEE 
 
 # import pymysql
@@ -182,7 +182,7 @@
 # db.rollback()
 # # disconnect from server
 # db.close()
-#-------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------------
 # ### Requests Tutorial
 # # https://stackabuse.com/the-python-requests-module/
 
@@ -206,10 +206,10 @@
 # payload = {'user_name': 'admin', 'password': 'password'}
 # r = requests.post('http://httpbin.org/post', data=payload)
 
-#-------------------------------------------------------------------------------------------------------------------------
-### Matplotlib & Seaborn 
+# -------------------------------------------------------------------------------------------------------------------------
+# ## Matplotlib & Seaborn 
 # https://elitedatascience.com/python-seaborn-tutorial
-## Seaborn's built-in datasets - https://github.com/mwaskom/seaborn-data
+# # Seaborn's built-in datasets - https://github.com/mwaskom/seaborn-data
 
 # import matplotlib.pyplot as plt
 # import pandas as pd
@@ -300,10 +300,10 @@
 # # Display graph in Python
 # plt.show()
 
-#-------------------------------------------------------------------------------------------------------------------------
-### SQL Queries in Pandas Python format
-## https://codeburst.io/how-to-rewrite-your-sql-queries-in-pandas-and-more-149d341fc53e
-## take airports.csv from http://ourairports.com/data/
+# -------------------------------------------------------------------------------------------------------------------------
+# ## SQL Queries in Pandas Python format
+# # https://codeburst.io/how-to-rewrite-your-sql-queries-in-pandas-and-more-149d341fc53e
+# # take airports.csv from http://ourairports.com/data/
 
 import pandas as pd 
 import sqlalchemy
@@ -315,7 +315,7 @@ sql = ''' SELECT id FROM airports WHERE ident = "KLAX"'''
 pdselectid = airports[airports.ident=='KLAX'].id 
 
 sql = ''' SELECT DISTINCT type FROM airports'''
-pdselectdistinct = airports.type.unique()
+pdselectDISTINCT = airports.type.unique()
 
 sql = ''' SELECT * FROM airports WHERE type IN ('heliport', 'balloonport')'''
 pdin = airports[airports.type.isin(['heliport','balloonport'])]
@@ -345,6 +345,24 @@ pdn = pdbycountry.nlargest(10)
 # print(airports.nlargest(5, 'id'))
 
 
+#-------------------------------------------------------------------------------------------------------------------------
+# Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
+
+# Equilateral: It's a triangle with 3 sides of equal length.
+# Isosceles: It's a triangle with 2 sides of equal length.
+# Scalene: It's a triangle with 3 sides of differing lengths.
+# Not A Triangle: The given values of A, B, and C don't form a triangle.
+
+sql = ''' SELECT CASE 
+					WHEN A + B > C AND B + C > A AND A + C > B THEN 
+		  		CASE 
+					WHEN A = B = C THEN "Equilateral"
+					WHEN A = B OR B = C OR A = C THEN "Isoceles"
+					ELSE "Scalene"
+				END
+			ELSE "Not a Triangle" 
+		  END
+		FROM Triangles; '''
 
 
 #-------------------------------------------------------------------------------------------------------------------------
@@ -355,6 +373,27 @@ pdn = pdbycountry.nlargest(10)
 # sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
 
 
+#-------------------------------------------------------------------------------------------------------------------------
+### HackerRank Medium Difficulty SQL Advanced Select 
+## https://www.hackerrank.com/challenges/the-company/problem
+
+# Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
+
+# Can be done without joins 
+# Company table has all codes so only need to select C.company_code, same for founder
+# Total number of managers - select count (DISTINCT) for each manager type and employee
+# Select from multiple tables on common columns 
+# Group then order by company code 
+
+sql = ''' SELECT c.company_code, c.founder, 
+    COUNT(DISTINCT l.lead_manager_code), COUNT(DISTINCT s.senior_manager_code), 
+    COUNT(DISTINCT m.manager_code),COUNT(DISTINCT e.employee_code) 
+FROM Company c, Lead_Manager l, Senior_Manager s, Manager m, Employee e 
+WHERE c.company_code = l.company_code 
+    AND l.lead_manager_code=s.lead_manager_code 
+    AND s.senior_manager_code=m.senior_manager_code 
+    AND m.manager_code=e.manager_code 
+GROUP BY c.company_code ORDER BY c.company_code; '''
 
 
 
