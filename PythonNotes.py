@@ -305,95 +305,230 @@
 # # https://codeburst.io/how-to-rewrite-your-sql-queries-in-pandas-and-more-149d341fc53e
 # # take airports.csv from http://ourairports.com/data/
 
-import pandas as pd 
-import sqlalchemy
+# import pandas as pd 
+# import sqlalchemy
 
-airports = pd.read_csv('airports.csv')
+# airports = pd.read_csv('airports.csv')
 
-### BASICS 
-sql = ''' SELECT id FROM airports WHERE ident = "KLAX"''' 
-pdselectid = airports[airports.ident=='KLAX'].id 
+# ### BASICS 
+# sql = ''' SELECT id FROM airports WHERE ident = "KLAX"''' 
+# pdselectid = airports[airports.ident=='KLAX'].id 
 
-sql = ''' SELECT DISTINCT type FROM airports'''
-pdselectDISTINCT = airports.type.unique()
+# sql = ''' SELECT DISTINCT type FROM airports'''
+# pdselectDISTINCT = airports.type.unique()
 
-sql = ''' SELECT * FROM airports WHERE type IN ('heliport', 'balloonport')'''
-pdin = airports[airports.type.isin(['heliport','balloonport'])]
+# sql = ''' SELECT * FROM airports WHERE type IN ('heliport', 'balloonport')'''
+# pdin = airports[airports.type.isin(['heliport','balloonport'])]
 
-sql = ''' SELECT * FROM airports WHERE type NOT IN ('heliport', 'balloonport')'''
-pdnotin = airports[~airports.type.isin(['heliport','balloonport'])]
+# sql = ''' SELECT * FROM airports WHERE type NOT IN ('heliport', 'balloonport')'''
+# pdnotin = airports[~airports.type.isin(['heliport','balloonport'])]
 
-# In Pandas, .count() will return the number of non-null/NaN values. To get the same result as the SQL COUNT, use .size().
-sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, type '''
-pdsize = airports.groupby(['iso_country','type']).size()
+# # In Pandas, .count() will return the number of non-null/NaN values. To get the same result as the SQL COUNT, use .size().
+# sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, type '''
+# pdsize = airports.groupby(['iso_country','type']).size()
 
-### GETS HARDER
-sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, COUNT(*) DESC '''
-pdorderbycountdesc = airports.groupby(['iso_country', 'type']).size().to_frame('size').reset_index().sort_values(['iso_country', 'size'], ascending=[True, False])
-# What is this trickery with .to_frame() and .reset_index()? Because we want to sort by our calculated field (size), this field needs to become part of the DataFrame. After grouping in Pandas, we get back a different type, called a GroupByObject. So we need to convert it back to a DataFrame. With .reset_index(), we restart row numbering for our data frame.
+# ### GETS HARDER
+# sql = ''' SELECT iso_country, type, COUNT(*) FROM airports GROUP BY iso_country, type ORDER BY iso_country, COUNT(*) DESC '''
+# pdorderbycountdesc = airports.groupby(['iso_country', 'type']).size().to_frame('size').reset_index().sort_values(['iso_country', 'size'], ascending=[True, False])
+# # What is this trickery with .to_frame() and .reset_index()? Because we want to sort by our calculated field (size), this field needs to become part of the DataFrame. After grouping in Pandas, we get back a different type, called a GroupByObject. So we need to convert it back to a DataFrame. With .reset_index(), we restart row numbering for our data frame.
 
-sql = ''' SELECT type, COUNT(*) FROM airports WHERE iso_country = 'US' GROUP BY type HAVING COUNT(*) > 1000 ORDER BY COUNT(*) DESC '''
-pdhaving = airports[airports.iso_country == 'US'].groupby('type').filter(lambda g: len(g) > 1000).groupby('type').size().sort_values(ascending=False)
+# sql = ''' SELECT type, COUNT(*) FROM airports WHERE iso_country = 'US' GROUP BY type HAVING COUNT(*) > 1000 ORDER BY COUNT(*) DESC '''
+# pdhaving = airports[airports.iso_country == 'US'].groupby('type').filter(lambda g: len(g) > 1000).groupby('type').size().sort_values(ascending=False)
 
-# Create new dataframe that contains number of airports per country
-pdbycountry = airports.groupby(['iso_country']).size()
+# # Create new dataframe that contains number of airports per country
+# pdbycountry = airports.groupby(['iso_country']).size()
 
-# Order things by airport count and select the top 10 countries with the largest count
-sql = ''' SELECT iso_country FROM by_country ORDER BY size desc LIMIT 10 '''
-pdn = pdbycountry.nlargest(10)
-# nlargest(number of rows to pull, which column to pull from)
-# print(airports.nlargest(5, 'id'))
-
-
-#-------------------------------------------------------------------------------------------------------------------------
-# Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
-
-# Equilateral: It's a triangle with 3 sides of equal length.
-# Isosceles: It's a triangle with 2 sides of equal length.
-# Scalene: It's a triangle with 3 sides of differing lengths.
-# Not A Triangle: The given values of A, B, and C don't form a triangle.
-
-sql = ''' SELECT CASE 
-					WHEN A + B > C AND B + C > A AND A + C > B THEN 
-		  		CASE 
-					WHEN A = B = C THEN "Equilateral"
-					WHEN A = B OR B = C OR A = C THEN "Isoceles"
-					ELSE "Scalene"
-				END
-			ELSE "Not a Triangle" 
-		  END
-		FROM Triangles; '''
+# # Order things by airport count and select the top 10 countries with the largest count
+# sql = ''' SELECT iso_country FROM by_country ORDER BY size desc LIMIT 10 '''
+# pdn = pdbycountry.nlargest(10)
+# # nlargest(number of rows to pull, which column to pull from)
+# # print(airports.nlargest(5, 'id'))
 
 
-#-------------------------------------------------------------------------------------------------------------------------
-# Random SQL Question
-# # Find cities in table Station that start with vowels 
-# sql = ''' SELECT City FROM Station WHERE City RLIKE '^[aeiou]' ''' 
-# # Ending with vowels?
-# sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
+# #-------------------------------------------------------------------------------------------------------------------------
+# # Write a query identifying the type of each record in the TRIANGLES table using its three side lengths. Output one of the following statements for each record in the table:
+
+# # Equilateral: It's a triangle with 3 sides of equal length.
+# # Isosceles: It's a triangle with 2 sides of equal length.
+# # Scalene: It's a triangle with 3 sides of differing lengths.
+# # Not A Triangle: The given values of A, B, and C don't form a triangle.
+
+# sql = ''' SELECT CASE 
+# 					WHEN A + B > C AND B + C > A AND A + C > B THEN 
+# 		  		CASE 
+# 					WHEN A = B = C THEN "Equilateral"
+# 					WHEN A = B OR B = C OR A = C THEN "Isoceles"
+# 					ELSE "Scalene"
+# 				END
+# 			ELSE "Not a Triangle" 
+# 		  END
+# 		FROM Triangles; '''
 
 
-#-------------------------------------------------------------------------------------------------------------------------
-### HackerRank Medium Difficulty SQL Advanced Select 
-## https://www.hackerrank.com/challenges/the-company/problem
+# #-------------------------------------------------------------------------------------------------------------------------
+# Random SQL Questions
+
+# Find cities in table Station that start with vowels 
+sql = ''' SELECT City FROM Station WHERE City RLIKE '^[aeiou]' ''' 
+# Ending with vowels?
+sql = ''' SELECT City FROM Station WHERE City REGEXP '[aeiou]$' '''
+
+# Write a query to find the 10th highest employee salary from table employee
+sql = ''' SELECT Distinct(salary) from Employee 
+		  ORDER BY salary DESC
+		  LIMIT 1 OFFSET 9'''
+
+# Make col2 look exactly opposite to col1
+# Col1	Col2
+# 1		0
+# 0		1
+# 0		1
+# 0		1
+# 1		0
+# 0		1
+# 1		0
+# 1		0
+
+sql = ''' UPDATE table set col2 = case when col1 = 1 then 0 else 1 end; '''
+
+sql = ''' SELECT b.emp_id AS Manager_Id, b.Emp_name AS Manager, AVG(a.Salary) AS Average_Salary_under_manager FROM employee a, employee b where a.manager_id = b.emp_id group by b.emp_id, b.emp_name order by b.emp_id '''
+
+
+# #-------------------------------------------------------------------------------------------------------------------------
+# ### HackerRank Medium Difficulty SQL Advanced Select 
+# ## https://www.hackerrank.com/challenges/the-company/problem
 
 # Given the table schemas below, write a query to print the company_code, founder name, total number of lead managers, total number of senior managers, total number of managers, and total number of employees. Order your output by ascending company_code.
 
-# Can be done without joins 
-# Company table has all codes so only need to select C.company_code, same for founder
-# Total number of managers - select count (DISTINCT) for each manager type and employee
-# Select from multiple tables on common columns 
-# Group then order by company code 
+# # Can be done without joins 
+# # Company table has all codes so only need to select C.company_code, same for founder
+# # Total number of managers - select count (DISTINCT) for each manager type and employee
+# # Select from multiple tables on common columns 
+# # Group then order by company code 
 
-sql = ''' SELECT c.company_code, c.founder, 
-    COUNT(DISTINCT l.lead_manager_code), COUNT(DISTINCT s.senior_manager_code), 
-    COUNT(DISTINCT m.manager_code),COUNT(DISTINCT e.employee_code) 
-FROM Company c, Lead_Manager l, Senior_Manager s, Manager m, Employee e 
-WHERE c.company_code = l.company_code 
-    AND l.lead_manager_code=s.lead_manager_code 
-    AND s.senior_manager_code=m.senior_manager_code 
-    AND m.manager_code=e.manager_code 
-GROUP BY c.company_code ORDER BY c.company_code; '''
+# sql = ''' SELECT c.company_code, c.founder, 
+#     COUNT(DISTINCT l.lead_manager_code), COUNT(DISTINCT s.senior_manager_code), 
+#     COUNT(DISTINCT m.manager_code),COUNT(DISTINCT e.employee_code) 
+# FROM Company c, Lead_Manager l, Senior_Manager s, Manager m, Employee e 
+# WHERE c.company_code = l.company_code 
+#     AND l.lead_manager_code=s.lead_manager_code 
+#     AND s.senior_manager_code=m.senior_manager_code 
+#     AND m.manager_code=e.manager_code 
+# GROUP BY c.company_code ORDER BY c.company_code; '''
+
+# #-------------------------------------------------------------------------------------------------------------------------
+# ### HackerRank Medium Difficulty SQL Advanced Select 
+# ## https://www.hackerrank.com/challenges/the-pads/problem
+
+# # Generate the following two result sets:
+# # Query an alphabetically ordered list of all names in OCCUPATIONS, immediately followed by the first letter of each profession as a parenthetical (i.e.: enclosed in parentheses). For example: AnActorName(A), ADoctorName(D), AProfessorName(P), and ASingerName(S).
+# # Query the number of ocurrences of each occupation in OCCUPATIONS. Sort the occurrences in ascending order, and output them in the following format: 
+
+sql = ''' SELECT name AS '',
+			Occupation AS '', CONCAT('(',LEFT(Occupation,1),')') AS ''
+		  FROM Occupations 
+		  ORDER BY name
+
+		  SELECT CONCAT('There are total ',count(occupation),' ',lower(occupation),'s.') AS total
+		  FROM occupations
+		  GROUP BY occupation
+	      ORDER BY total '''
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+# Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. Order your output in descending order by the total number of challenges in which the hacker earned a full score. If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+
+
+sql = ''' SELECT hacker_id, name 
+		  FROM hackers h 
+		  JOIN submissions s on h.hacker_id = s.hacker_id
+		  WHERE score = (SELECT max(score)
+		  				 FROM difficulty d JOIN challenges c on d.difficulty_level = c.difficulty_level)
+		  AND count(distinct challenge_id) > 2
+
+		  SELECT h.hacker_id, h.name
+		  FROM submissions s 
+		  inner join challenges c
+		  on s.challenge_id = c.challenge_id
+		  inner join difficulty d 
+		  on c.difficulty_level = d.difficulty_level
+		  inner join hackers h 
+		  on s.hacker_id = h.hacker_id 
+		  where s.score = d.score and c.difficulty_level = d.difficulty_level
+		  group by h.hacker_id, h.name
+	 	  having count(s.hacker_id) > 1
+		  order by count(s.hacker_id) desc, s.hacker_id asc '''
+# Before starting this query, look at the tables that has the most important data - submissions
+# start by pulling the necessary data from submissions
+# inner join the other tables on their respective mutual identifiers 
+# then do a where clause that specifies the parameters - score = score because you want the highest score
+# difficulty_level must be equal
+# group by what we're looking for, find the one with the most scores by count() 
+# don't need to count distinct 
+#-------------------------------------------------------------------------------------------------------------------------
+# https://www.hackerrank.com/challenges/harry-potter-and-wands/problem
+# Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. If more than one wand has same power, sort the result in order of descending age.
+
+sql = ''' SELECT id, age, coins_needed, power 
+    FROM wands w 
+    JOIN wands_property p ON w.code = p.code
+    WHERE p.is_evil = 0 AND w.coins_needed = 
+    (SELECT MIN(coins_needed) FROM wands ww JOIN wands_property wp ON ww.code = wp.code 
+     WHERE ww.power = w.power AND p.age = wp.age)
+    ORDER BY w.power desc, p.age desc '''
+
+# id, age, coins_needed, power
+# join on code column 
+# wand can't be evil and needs to be lowest price
+# first select clause finds id, age, price, power where evil = 0 and price = min
+# then next select clause finds min(price) while checking power and age
+# order by power desc, age desc 
+
+#-------------------------------------------------------------------------------------------------------------------------
+# https://www.hackerrank.com/challenges/contest-leaderboard/problem
+# Write a query to print the hacker_id, name, and total score of the hackers ordered by the descending score. If more than one hacker achieved the same total score, then sort the result by ascending hacker_id. Exclude all hackers with a total score of 0 from your result.
+
+# join tables on hacker_id 
+# score = sum(max(score))
+# where score = (select max(sum(score)) from hackers hh JOIN submissions ss on hh.hacker_id = ss.submissions.id where)
+# hacker_id, name, total score order by score desc
+# sort by asc hacker_id if 
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+### ------------------------------------------|      SQL JOINS      |-------------------------------------------------------------  
+
+# 1) INNER JOIN (a.k.a. “simple join”): Returns all rows for which there is at least one match in BOTH tables. This is the default type of join if no specific JOIN type is specified.
+
+# 2) LEFT JOIN (or LEFT OUTER JOIN): Returns all rows from the left table, and the matched rows from the right table; i.e., the results will contain all records from the left table, even if the JOIN condition doesn’t find any matching records in the right table. This means that if the ON clause doesn’t match any records in the right table, the JOIN will still return a row in the result for that record in the left table, but with NULL in each column from the right table.
+
+# 3) RIGHT JOIN (or RIGHT OUTER JOIN): Returns all rows from the right table, and the matched rows from the left table. This is the exact opposite of a LEFT JOIN; i.e., the results will contain all records from the right table, even if the JOIN condition doesn’t find any matching records in the left table. This means that if the ON clause doesn’t match any records in the left table, the JOIN will still return a row in the result for that record in the right table, but with NULL in each column from the left table.
+
+# 4) FULL JOIN (or FULL OUTER JOIN): Returns all rows for which there is a match in EITHER of the tables. Conceptually, a FULL JOIN combines the effect of applying both a LEFT JOIN and a RIGHT JOIN; i.e., its result set is equivalent to performing a UNION of the results of left and right outer queries.
+
+# 5) CROSS JOIN: Returns all records where each row from the first table is combined with each row from the second table (i.e., returns the Cartesian product of the sets of rows from the joined tables). Note that a CROSS JOIN can either be specified using the CROSS JOIN syntax (“explicit join notation”) or (b) listing the tables in the FROM clause separated by commas without using a WHERE clause to supply join criteria (“implicit join notation”).
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+
+print(1968*15)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
