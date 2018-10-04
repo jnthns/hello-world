@@ -509,26 +509,131 @@ sql = ''' SELECT id, age, coins_needed, power
 
 # 5) CROSS JOIN: Returns all records where each row from the first table is combined with each row from the second table (i.e., returns the Cartesian product of the sets of rows from the joined tables). Note that a CROSS JOIN can either be specified using the CROSS JOIN syntax (“explicit join notation”) or (b) listing the tables in the FROM clause separated by commas without using a WHERE clause to supply join criteria (“implicit join notation”).
 
+# 6) NATURAL JOIN: Joins on one or more columns in two tables, then pulls the rest of the columns from both tables. Only displays one instance of the column that the tables are joined on. Example, column sales_id exists in table Sales and table Customers - select * from sales natural join customers - first column displayed is sales_id, then the rest are all columns from both tables. 
+
+# USING clause - can join on key column with USING instead of usual syntax
+sql = ''' SELECT c.name, l.name 
+		  FROM countries 
+		  INNER JOIN language 
+		  USING(code)'''
+# where code is the primary key column in both tables
+
+# Can also join without explicity naming JOIN ON...etc
+sql = '''SELECT c.name, l.name 
+		 FROM countries
+		 where c.code = l.code'''
+
+# First table joins on second table - Examples 
+# https://www.w3resource.com/sql-exercises/movie-database-exercise/joins-exercises-on-movie-database.php 
+# Question #3
+# Write a query in SQL to find the name of movie and director (first and last names) who directed a movie that casted a role for 'Eyes Wide Shut'. 
+# 		  1) Using Inner Joins
+sql = '''
+		SELECT mov_title, dir_fname, dir_lname FROM director d
+		JOIN movie_direction md ON d.dir_id = md.dir_id
+		JOIN movie_cast mc ON md.mov_id = mc.mov_id
+		JOIN movie m on mc.mov_id = m.mov_id
+		WHERE m.mov_title = 'Eyes Wide Shut'
+		
+		# 2) Using Natural Joins
+		SELECT mov_title, dir_fname, dir_lname FROM director 
+		NATURAL JOIN movie_direction
+		NATURAL JOIN movie_cast
+		NATURAL JOIN movie
+		WHERE mov_title = 'Eyes Wide Shut' 
+
+		# 4. Write a query in SQL to find the name of movie and director (first and last names) who directed a movie that casted a role as Sean Maguire.
+		SELECT mov_title, dir_fname, dir_lname FROM director
+		JOIN movie_direction on director.dir_id = movie_direction.dir_id 
+		NATURAL JOIN movie_cast
+		NATURAL JOIN movie
+		WHERE role = 'Sean Maguire'
+
+
+	'''
+
 #-------------------------------------------------------------------------------------------------------------------------
+# SQL Joins/Subqueries Practice
+# https://www.w3resource.com/sql-exercises/subqueries/sql-subqueries-inventory-exercise-30.php
 
+sql = ''' 
 
-print(1968*15)
+		SELECT o.ord_no, o.purch_amt, c.cust_name, c.city 
+		FROM orders o, customer c 
+		WHERE o.customer_id = c.customer_id
+		AND o.purch_amt BETWEEN 500 and 2000
 
+		SELECT c.cust_name, s.name
+		from customer c, salesman s
+		where c.salesman_id = s.salesman_id
 
+		SELECT c.cust_name, s.name, s.commission 
+		FROM customer c, salesman s
+		WHERE c.salesman_id = s.salesman_id
+		AND s.commission > .12
 
+		SELECT o.*, c.cust_name as Customer, s.name as Salesman, s.commission
+		FROM orders o, customer c, salesman s
+		WHERE o.customer_id = c.customer_id and c.salesman_id = s.salesman_id
 
+		SELECT c.*, s.name as Salesman
+		FROM customer c 
+		LEFT JOIN salesman s ON c.salesman_id = s.salesman_id
+		WHERE c.grade < 300
+		ORDER BY c.customer_id asc
 
+		SELECT c.cust_name as Customer, c.city, o.ord_no, o.ord_date, o.purch_amt, s.name, s.commission 
+		FROM customer c
+		LEFT JOIN orders o on c.customer_id = o.customer_id
+		LEFT JOIN salesman s on o.salesman_id = s.salesman_id
 
+		SELECT c.cust_name as Customer, c.city, o.ord_no, o.ord_date, o.purch_amt
+		from customers c, orders o where c.customer_id = o.customer_id
+		where c.grade is not null
 
+		SELECT * FROM Orders 
+		where salesman_id = (select salesman_id from salesman where salesman_id = 'Paul Adam')
 
+		# Write a query to find all those customers who hold a different grade than any customer of the city Dallas.
+		SELECT * FROM customer 
+		WHERE NOT grade = ANY (SELECT grade FROM customer WHERE city = 'Dallas')
 
+		SELECT avg(i.pro_price) as Average Price, c.com_name as Manufacturer FROM item_mast i
+		JOIN company_mast c on i.pro_com = c.com_id 
 
+		SELECT rev.rev_name FROM reviewer rev JOIN rating r ON rev.rev_id = r.rev_id 
+		WHERE num_o_ratings IS NULL
 
+		# Write a query in SQL to list the first and last names of all the actors who were cast in the movie 'Annie Hall', and the roles they played in that production.
+		SELECT a.act_fname as firstname, a.act_lname as lastname, c.role FROM actor a 
+		JOIN movie_cast c on a.act_id = c.act_id
+		JOIN movie m on c.mov_id = m.mov_id
+		WHERE m.mov_title = 'Annie Hall'
 
+		SELECT mov_title, avg(mov_time), count(gen_title) FROM movie m
+		JOIN movie_genres mg on m.mov_id = mg.mov_id
+		JOIN genres g on mg.gen_id = g.gen_id
+		GROUP BY gen_title
 
+		select mov_title, act_fname, act_lname, role FROM movie 
+		JOIN movie_cast ON movie.mov_id = movie_cast.mov_id
+		NATURAL JOIN actor 
+		WHERE actor.act_id IN (SELECT act_id FROM movie_cast GROUP BY act_id HAVING COUNT(*) >= 2)
 
+		SELECT act_fname, act_lname, role, mov_title FROM actor a
+		JOIN movie_cast c ON a.act_id = c.act_id
+		JOIN movie m ON c.mov_id = m.mov_id
+		WHERE mov_title = 'Chinatown' 
 
+		SELECT dir_fname, dir_lname, mov_title, act_fname as firstname, act_lname as lastname, role FROM director  
+		NATURAL JOIN movie_direction 
+		NATURAL JOIN movie m
+		NATURAL JOIN movie_cast
+		NATURAL JOIN actor
+		WHERE act_fname = 'Claire' and act_lname = 'Danes'
 
+6 + 12
+		
 
 
 
